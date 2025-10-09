@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Finanziaria Mensile</title>
+    <!-- Collegamento al file di stile CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Libreria SheetJS per leggere i file Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1 id="dashboard-title">Dashboard Finanziaria Mensile</h1>
+        </header>
+
+        <!-- Pannello di controllo con la griglia di pulsanti -->
+        <div class="control-panel">
+            <div id="month-buttons-container" class="month-grid">
+                <!-- I pulsanti dei mesi verranno aggiunti qui da JavaScript -->
+            </div>
+        </div>
+
+        <div id="status-message">Caricamento dati dal tuo foglio Excel...</div>
+
+        <div id="dashboard-grid" class="hidden">
+            <!-- Card Giacenza (Statica) -->
+            <div class="card">
+                <div class="card-content">
+                    <h2>GIACENZA</h2>
+                    <p class="value blue">0,00 €</p>
+                </div>
+                <div class="card-footer">
+                     <div class="footer-item">
+                        <span>DISPONIBILITÀ</span>
+                        <span>0,00 €</span>
+                    </div>
+                    <!-- Segnaposto per allineamento -->
+                    <div class="footer-item placeholder"></div>
+                    <div class="footer-item placeholder"></div>
+                </div>
+            </div>
+
+            <!-- Card Entrate (Dinamica) -->
+            <div class="card">
+                <div class="card-content">
+                    <h2>ENTRATE</h2>
+                    <p id="total-entrate" class="value green">0,00 €</p>
+                </div>
+                <div class="card-footer">
+                    <div class="footer-item">
+                        <span>STIPENDIO</span>
+                        <span id="stipendio-valore">0,00 €</span>
+                    </div>
+                    <div class="footer-item">
+                        <span>ALTRO</span>
+                        <span id="altro-valore">0,00 €</span>
+                    </div>
+                    <!-- Segnaposto per allineamento -->
+                    <div class="footer-item placeholder"></div>
+                </div>
+            </div>
+
+            <!-- Card Spese (Dinamica) -->
+            <div class="card">
+                <div class="card-content">
+                    <h2>SPESE</h2>
+                    <p id="total-spese" class="value red">0,00 €</p>
+                </div>
+                <div class="card-footer">
+                    <div class="footer-item">
+                        <span>NECESSITÀ</span>
+                        <span id="necessita-valore">0,00 €</span>
+                    </div>
+                    <div class="footer-item">
+                        <span>SVAGO</span>
+                        <span id="svago-valore">0,00 €</span>
+                    </div>
+                    <div class="footer-item">
+                        <span>DA RIMBORSARE</span>
+                        <span id="rimborsare-valore">0,00 €</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card Risparmi (Statica) -->
+            <div class="card">
+                <div class="card-content">
+                    <h2>RISPARMI</h2>
+                    <p class="value orange">0,00 €</p>
+                </div>
+                <div class="card-footer">
+                    <div class="footer-item">
+                        <span>OBIETTIVO</span>
+                        <span>0,00 €</span>
+                    </div>
+                    <!-- Segnaposto per allineamento -->
+                    <div class="footer-item placeholder"></div>
+                    <div class="footer-item placeholder"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Collegamento al file JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
+
