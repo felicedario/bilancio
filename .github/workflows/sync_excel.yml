@@ -1,0 +1,47 @@
+# Nome del workflow, visibile nella scheda "Actions" di GitHub
+name: Sincronizza Excel da Google Drive
+
+on:
+  # 1. Esegue l'automazione ogni ora, al minuto 0
+  schedule:
+    - cron: '0 * * * *'
+  
+  # 2. Permette di avviare l'automazione manualmente dalla pagina "Actions"
+  workflow_dispatch:
+
+jobs:
+  sync:
+    # Usa un server virtuale Linux per eseguire i comandi
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Fa una copia del tuo repository sul server virtuale
+      - name: Checkout del repository
+        uses: actions/checkout@v4
+
+      # Step 2: Scarica il file Excel da Google Drive usando il link diretto
+      - name: Download del file Excel
+        run: |
+          # L'ID del tuo file Excel è già inserito qui
+          FILE_ID="1k7Es36jk9s_mdT4t6RdbuSt460hdmpZA"
+          URL="https://drive.google.com/uc?export=download&id=${FILE_ID}"
+          
+          # Usa il comando 'curl' per scaricare il file e salvarlo come 'ProvaApp.xlsm'
+          # Il flag -L segue eventuali reindirizzamenti (importante per Google Drive)
+          curl -L -o ProvaApp.xlsm "$URL"
+
+      # Step 3: Fa il commit e il push del file SOLO se è cambiato
+      - name: Commit e push automatico
+        # Usa un'azione pre-fatta dalla community per semplificare il processo
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          # Il messaggio che vedrai nella cronologia dei commit
+          commit_message: "chore(bot): Aggiornamento automatico file Excel"
+          
+          # Dice all'azione di considerare solo questo file
+          file_pattern: ProvaApp.xlsm
+          
+          # Aggiunge l'autore del commit
+          commit_user_name: GitHub Actions Bot
+          commit_user_email: actions@github.com
+          commit_author: GitHub Actions Bot <actions@github.com>
