@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Finanziaria Mensile</title>
-    <!-- Collegamento al file di stile CSS -->
     <link rel="stylesheet" href="style.css">
-    <!-- Libreria SheetJS per leggere i file Excel -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -16,33 +15,29 @@
             <h1 id="dashboard-title">Dashboard Finanziaria Mensile</h1>
         </header>
 
-        <!-- Pannello di controllo con la griglia di pulsanti -->
         <div class="control-panel">
             <div id="month-buttons-container" class="month-grid">
-                <!-- I pulsanti dei mesi verranno aggiunti qui da JavaScript -->
-            </div>
+                </div>
         </div>
 
         <div id="status-message">Caricamento dati dal tuo foglio Excel...</div>
 
         <div id="dashboard-grid" class="hidden">
-            <!-- Card Giacenza (Dinamica) -->
             <div class="card">
-    <div class="card-content">
-        <h2>GIACENZA</h2>
-        <p id="giacenza-valore" class="value blue">0,00 €</p>
-    </div>
-    <div class="card-footer">
-          <div class="footer-item">
-              <span>DISPONIBILITÀ</span>
-              <span id="disponibilita-valore">0,00 €</span>
-          </div>
-        <div class="footer-item placeholder"></div>
-        <div class="footer-item placeholder"></div>
-    </div>
-</div>
+                <div class="card-content">
+                    <h2>GIACENZA</h2>
+                    <p id="giacenza-valore" class="value blue">0,00 €</p>
+                </div>
+                <div class="card-footer">
+                      <div class="footer-item">
+                          <span>DISPONIBILITÀ</span>
+                          <span id="disponibilita-valore">0,00 €</span>
+                      </div>
+                    <div class="footer-item placeholder"></div>
+                    <div class="footer-item placeholder"></div>
+                </div>
+            </div>
 
-            <!-- Card Entrate (Dinamica) -->
             <div class="card">
                 <div class="card-content">
                     <h2>ENTRATE</h2>
@@ -57,12 +52,10 @@
                         <span>ALTRO</span>
                         <span id="altro-valore">0,00 €</span>
                     </div>
-                    <!-- Segnaposto per allineamento -->
                     <div class="footer-item placeholder"></div>
                 </div>
             </div>
 
-            <!-- Card Spese (Dinamica) -->
             <div class="card">
                 <div class="card-content">
                     <h2>SPESE</h2>
@@ -84,27 +77,48 @@
                 </div>
             </div>
 
-            <!-- Card Risparmi & Investimenti (Dinamica) -->
-          <div class="card">
-    <div class="card-content">
-        <h2>RISPARMI</h2>
-        <p id="risparmi-valore" class="value orange">0,00 €</p>
-    </div>
-</div>
-<div class="card">
-    <div class="card-content">
-        <h2>INVESTIMENTI</h2>
-        <p id="investimenti-valore" class="value orange">0,00 €</p>
-    </div>
-</div>
-        </div>
-    </div>
+            <div class="card">
+                <div class="card-content">
+                    <h2>RISPARMI</h2>
+                    <p id="risparmi-valore" class="value orange">0,00 €</p>
+                </div>
+            </div>
 
-    <!-- Collegamento al file JavaScript -->
+            <div class="card">
+                <div class="card-content">
+                    <h2>INVESTIMENTI</h2>
+                    <p id="investimenti-valore" class="value orange">0,00 €</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="obiettivi-section" class="hidden">
+            <h2>OBIETTIVI</h2>
+            <div class="obiettivi-grid">
+                <div class="obiettivo-card">
+                    <div class="chart-container">
+                        <canvas id="necessita-chart"></canvas>
+                        <div id="necessita-percent" class="chart-percent">0%</div>
+                    </div>
+                    <div class="obiettivo-details">
+                        <span class="obiettivo-title">NECESSITÀ</span>
+                        <span id="necessita-spesa-corrente" class="obiettivo-value">0,00 €</span>
+                        <div class="obiettivo-footer">
+                            <div class="footer-col">
+                                <span>MAX</span>
+                                <span id="necessita-max">0,00 €</span>
+                            </div>
+                            <div class="footer-col">
+                                <span>MARGINE</span>
+                                <span id="necessita-margine">--</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+        </div>
+        </div>
+
     <script src="script.js"></script>
 </body>
 </html>
-
-
-
-
