@@ -94,8 +94,8 @@ header h1 {
 }
 
 .card-content {
-    flex-grow: 1; /* Forza questa sezione a espandersi */
-    min-height: 90px; /* Altezza minima per la parte superiore */
+    flex-grow: 1;
+    min-height: 90px;
 }
 
 .card h2 {
@@ -117,6 +117,7 @@ header h1 {
 .value.green { color: #10b981; }
 .value.red { color: #ef4444; }
 .value.orange { color: #f97316; }
+.value.purple { color: #a855f7; } /* NUOVO */
 
 /* Sezione inferiore della card */
 .card-footer {
@@ -131,21 +132,19 @@ header h1 {
     align-items: center;
     font-size: 0.875rem;
     color: #4b5563;
-    min-height: 1.5rem; /* Altezza minima per ogni riga */
+    min-height: 1.5rem;
 }
 
 .footer-item span:first-child {
     font-weight: 500;
-    text-transform: uppercase; /* TESTO IN MAIUSCOLO */
+    text-transform: uppercase;
 }
 
 .footer-item.placeholder {
-    visibility: hidden; /* Nasconde i segnaposto ma mantiene lo spazio */
+    visibility: hidden;
 }
 
-
 /* --------------- STILI SEZIONE OBIETTIVI --------------- */
-
 #obiettivi-section {
     margin-top: 2rem;
 }
@@ -182,7 +181,7 @@ header h1 {
     position: relative;
     width: 100px;
     height: 100px;
-    flex-shrink: 0; /* Impedisce al grafico di rimpicciolirsi */
+    flex-shrink: 0;
 }
 
 .chart-percent {
@@ -239,12 +238,12 @@ header h1 {
 }
 
 /* Colori specifici per obiettivi */
-.chart-percent.red, .obiettivo-title.red { color: #d92d20; }
-.chart-percent.blue, .obiettivo-title.blue { color: #3b82f6; }
+.chart-percent.red, .obiettivo-title.red { color: #ef4444; }
 .chart-percent.orange, .obiettivo-title.orange { color: #f97316; }
+.chart-percent.purple, .obiettivo-title.purple { color: #a855f7; } /* NUOVO */
+
 
 /* --------------- STILI SEZIONE PORTAFOGLIO --------------- */
-
 #portafoglio-section {
     margin-top: 2rem;
 }
@@ -264,14 +263,14 @@ header h1 {
 .portafoglio-container {
     position: relative;
     width: 100%;
-    max-width: 400px; /* Limita la larghezza massima del grafico */
-    margin: 0 auto; /* Centra il grafico nel card */
+    max-width: 400px;
+    margin: 0 auto;
     padding-top: 1rem;
 }
 
 .portfolio-value {
     position: absolute;
-    top: 45%; /* Leggermente sopra il centro per fare spazio alla legenda */
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
