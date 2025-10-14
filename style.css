@@ -244,6 +244,7 @@ header h1 {
 
 
 /* --------------- STILI SEZIONE PORTAFOGLIO --------------- */
+
 #portafoglio-section {
     margin-top: 2rem;
 }
@@ -260,33 +261,97 @@ header h1 {
     display: none;
 }
 
+/* Modifica il contenitore della card per abilitare il flexbox per affiancare grafico e legenda */
+#portafoglio-section .card {
+    display: flex; /* Abilita flexbox */
+    flex-direction: column; /* Imposta direzione colonna di default per mobile */
+    align-items: center; /* Centra gli elementi */
+    gap: 1.5rem; /* Spazio tra gli elementi */
+    padding: 1.5rem; /* Assicurati che il padding sia presente */
+}
+
+@media (min-width: 768px) { /* Affianca gli elementi su schermi più grandi */
+    #portafoglio-section .card {
+        flex-direction: row; /* Direzione riga su desktop */
+        justify-content: center; /* Centra gli elementi orizzontalmente */
+        align-items: flex-start; /* Allinea in alto per la legenda */
+    }
+}
+
+
 .portafoglio-container {
     position: relative;
     width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-    padding-top: 1rem;
+    max-width: 250px; /* Riduci la larghezza massima del grafico per fare spazio */
+    min-width: 200px; /* Larghezza minima per evitare che si rimpicciolisca troppo */
+    height: 250px; /* Imposta un'altezza fissa per il grafico */
+    margin: 0; /* Rimuovi margin: 0 auto; per il flexbox */
+    padding-top: 0; /* Rimuovi padding-top se non necessario */
 }
 
 .portfolio-value {
     position: absolute;
-    top: 45%;
+    top: 50%; /* Centra verticalmente */
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
     display: flex;
     flex-direction: column;
+    pointer-events: none; /* Rende il testo non cliccabile per non interferire con il grafico */
 }
 
 .portfolio-value span:first-child {
-    font-size: 0.875rem;
+    font-size: 0.8rem; /* Riduci la dimensione del font */
     font-weight: 600;
     color: #6b7280;
     text-transform: uppercase;
 }
 
 .portfolio-value span:last-child {
-    font-size: 1.75rem;
+    font-size: 1.5rem; /* Riduci la dimensione del font */
     font-weight: bold;
     color: #1f2937;
 }
+
+/* Stili per la legenda personalizzata */
+.portfolio-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem; /* Spazio tra gli elementi della legenda */
+    font-size: 0.95rem;
+    color: #374151;
+    line-height: 1.4;
+    padding: 1rem 0; /* Padding interno */
+    width: 100%; /* Occupa tutta la larghezza su mobile */
+    max-width: 250px; /* Larghezza massima su desktop */
+}
+
+.portfolio-legend-item {
+    display: flex;
+    align-items: center;
+}
+
+.portfolio-legend-color {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 0.25rem;
+    margin-right: 0.75rem;
+    flex-shrink: 0; /* Impedisce che il quadratino si rimpicciolisca */
+}
+
+.portfolio-legend-text {
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    font-weight: 500;
+}
+
+.portfolio-legend-text span:first-child {
+    color: #4b5563;
+}
+
+.portfolio-legend-text span:last-child {
+    font-weight: 600;
+    color: #1f2937;
+}
+
