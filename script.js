@@ -2,7 +2,7 @@
 const sheetName = "APP";
 
 // URL diretto al file "Raw" sul tuo repository GitHub "bilancio"
-const excelUrl = "https://raw.githubusercontent.com/felicedario/bilancio/main/ProvaApp.xlsm";
+const excelUrl = "https://raw.githubusercontent.com/felicedario/bilancio/main/bilanciocorrente.xlsm";
 
 // --------------- FUNZIONI DI UTILITÀ ---------------
 
@@ -138,3 +138,4 @@ function updateDashboard(mese, datiMensili) {
 
 // Avvia il caricamento dei dati quando la pagina è pronta
 document.addEventListener('DOMContentLoaded', loadExcelData);
+
