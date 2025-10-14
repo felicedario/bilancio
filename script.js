@@ -51,6 +51,7 @@ const investimentiMinEl = document.getElementById('investimenti-min');
 const investimentiMargineEl = document.getElementById('investimenti-margine');
 const portafoglioSection = document.getElementById('portafoglio-section');
 const portfolioEntrateValoreEl = document.getElementById('portfolio-entrate-valore');
+const portfolioCustomLegend = document.getElementById('portfolio-custom-legend');
 
 let necessitaChart, svagoChart, risparmiChart, investimentiChart;
 let portfolioChart;
@@ -86,7 +87,6 @@ function processWorkbook(workbook) {
         const mese = row[0];
         if (mese && typeof mese === 'string' && mese.trim() !== '') {
             mesi.push(mese);
-            // --- BLOCCO CORRETTO CON VIRGOLE ---
             datiMensili[mese] = {
                 stipendio: parseValue(row[1]),
                 altro: parseValue(row[2]),
@@ -194,23 +194,82 @@ function updateDashboard(mese, datiMensili) {
     investimentiMargineEl.textContent = typeof dati.investimentiMargine === 'number' ? formatCurrency(dati.investimentiMargine) : '--';
     investimentiChart = createOrUpdateChart(investimentiChart, document.getElementById('investimenti-chart').getContext('2d'), [dati.investimentiPercent, dati.investimentiPercentResto], '#a855f7');
 
+    // --- AGGIORNAMENTO SEZIONE PORTAFOGLIO ---
     portfolioEntrateValoreEl.textContent = formatCurrency(dati.entrataTotale);
     const portfolioCtx = document.getElementById('portfolio-chart').getContext('2d');
+
+    const COLORS = {
+        necessita: '#ef4444',
+        svago: '#dc2626',
+        daRimborsare: '#be123c',
+        risparmi: '#f97316',
+        investimenti: '#a855f7',
+        nonAllocato: '#d1d5db'
+    };
+
+    const portfolioCategories = [
+        { label: 'Necessità', value: dati.necessitaPortafoglioPct, color: COLORS.necessita },
+        { label: 'Svago', value: dati.svagoPortafoglioPct, color: COLORS.svago },
+        { label: 'Da Rimborsare', value: dati.rimborsarePortafoglioPct, color: COLORS.daRimborsare },
+        { label: 'Risparmi', value: dati.risparmiPortafoglioPct, color: COLORS.risparmi },
+        { label: 'Investimenti', value: dati.investimentiPortafoglioPct, color: COLORS.investimenti },
+        { label: 'Non Allocato', value: dati.nonAllocatoPct, color: COLORS.nonAllocato }
+    ];
+
     const portfolioData = {
-        labels: ['Necessità', 'Svago', 'Da Rimborsare', 'Risparmi', 'Investimenti', 'Non Allocato'],
+        labels: portfolioCategories.map(c => c.label),
         datasets: [{
-            data: [dati.necessitaPortafoglioPct, dati.svagoPortafoglioPct, dati.rimborsarePortafoglioPct, dati.risparmiPortafoglioPct, dati.investimentiPortafoglioPct, dati.nonAllocatoPct],
-            backgroundColor: ['#ef4444', '#dc2626', '#2563eb', '#f97316', '#a855f7', '#d1d5db'],
-            borderColor: '#ffffff', borderWidth: 2, hoverOffset: 4
+            data: portfolioCategories.map(c => c.value),
+            backgroundColor: portfolioCategories.map(c => c.color),
+            borderColor: '#ffffff',
+            borderWidth: 2,
+            hoverOffset: 4
         }]
     };
 
     if (!portfolioChart) {
-        portfolioChart = new Chart(portfolioCtx, { type: 'doughnut', data: portfolioData, options: { responsive: true, maintainAspectRatio: true, cutout: '75%', plugins: { legend: { display: true, position: 'bottom', labels: { padding: 20, boxWidth: 12, font: { size: 12 } } }, tooltip: { enabled: true, callbacks: { label: ctx => `${ctx.label || ''}: ${(ctx.parsed * 100).toFixed(2)}%` } } } } });
+        portfolioChart = new Chart(portfolioCtx, {
+            type: 'doughnut',
+            data: portfolioData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '75%',
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        enabled: true,
+                        callbacks: {
+                            label: ctx => `${ctx.label || ''}: ${(ctx.parsed * 100).toFixed(2)}%`
+                        }
+                    }
+                }
+            }
+        });
     } else {
         portfolioChart.data.datasets[0].data = portfolioData.datasets[0].data;
+        portfolioChart.data.datasets[0].backgroundColor = portfolioData.datasets[0].backgroundColor;
         portfolioChart.update();
     }
+
+    // --- AGGIORNAMENTO LEGENDA PERSONALIZZATA ---
+    portfolioCustomLegend.innerHTML = '';
+    portfolioCategories.forEach(item => {
+        if (item.label !== 'Non Allocato' && item.value > 0) {
+            const legendItem = document.createElement('div');
+            legendItem.className = 'portfolio-legend-item';
+            legendItem.innerHTML = `
+                <div class="portfolio-legend-color" style="background-color: ${item.color};"></div>
+                <div class="portfolio-legend-text">
+                    <span>${item.label}:</span>
+                    <span>${(item.value * 100).toFixed(2)}%</span>
+                </div>
+            `;
+            portfolioCustomLegend.appendChild(legendItem);
+        }
+    });
 }
 
 document.addEventListener('DOMContentLoaded', loadExcelData);
