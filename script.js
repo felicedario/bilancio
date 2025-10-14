@@ -257,7 +257,8 @@ function updateDashboard(mese, datiMensili) {
     // --- AGGIORNAMENTO LEGENDA PERSONALIZZATA ---
     portfolioCustomLegend.innerHTML = '';
     portfolioCategories.forEach(item => {
-        if (item.label !== 'Non Allocato' && item.value > 0) {
+        // **CONDIZIONE CORRETTA**: Mostra tutte le categorie tranne "Non Allocato"
+        if (item.label !== 'Non Allocato') {
             const legendItem = document.createElement('div');
             legendItem.className = 'portfolio-legend-item';
             legendItem.innerHTML = `
