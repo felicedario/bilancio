@@ -43,7 +43,8 @@ const totalSpeseEl = document.getElementById('total-spese');
 const necessitaValoreEl = document.getElementById('necessita-valore');
 const svagoValoreEl = document.getElementById('svago-valore');
 const rimborsareValoreEl = document.getElementById('rimborsare-valore');
-
+const giacenzaValoreEl = document.getElementById('giacenza-valore');
+const disponibilitaValoreEl = document.getElementById('disponibilita-valore');
 // --------------- LOGICA PRINCIPALE ---------------
 
 // Funzione per caricare e processare il file Excel da GitHub
@@ -90,7 +91,9 @@ function processWorkbook(workbook) {
                 altro: parseValue(row[2]),
                 necessita: parseValue(row[5]),
                 svago: parseValue(row[6]),
-                daRimborsare: parseValue(row[7])
+                daRimborsare: parseValue(row[7]),
+                giacenza: parseValue(row[10]),      // <-- VALORE DA K4:K15
+            disponibilita: parseValue(row[11]) // <-- VALORE DA L4:L15
             };
         }
     }
@@ -134,8 +137,11 @@ function updateDashboard(mese, datiMensili) {
     necessitaValoreEl.textContent = formatCurrency(datiDelMese.necessita);
     svagoValoreEl.textContent = formatCurrency(datiDelMese.svago);
     rimborsareValoreEl.textContent = formatCurrency(datiDelMese.daRimborsare);
+    giacenzaValoreEl.textContent = formatCurrency(datiDelMese.giacenza);
+    disponibilitaValoreEl.textContent = formatCurrency(datiDelMese.disponibilita);
 }
 
 // Avvia il caricamento dei dati quando la pagina è pronta
 document.addEventListener('DOMContentLoaded', loadExcelData);
+
 
