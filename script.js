@@ -86,17 +86,40 @@ function processWorkbook(workbook) {
         const mese = row[0];
         if (mese && typeof mese === 'string' && mese.trim() !== '') {
             mesi.push(mese);
+            // --- BLOCCO CORRETTO CON VIRGOLE ---
             datiMensili[mese] = {
-                stipendio: parseValue(row[1]), altro: parseValue(row[2]), entrataTotale: parseValue(row[3]),
-                necessita: parseValue(row[5]), svago: parseValue(row[6]), daRimborsare: parseValue(row[7]),
-                giacenza: parseValue(row[10]), disponibilita: parseValue(row[11]),
-                risparmi: parseValue(row[13]), investimenti: parseValue(row[14]),
-                necessitaMax: parseValue(row[16]), necessitaPercent: parseValue(row[17]), necessitaPercentResto: parseValue(row[18]), necessitaMargine: row[19],
-                svagoMax: parseValue(row[21]), svagoPercent: parseValue(row[22]), svagoPercentResto: parseValue(row[23]), svagoMargine: row[24],
-                risparmiMin: parseValue(row[26]), risparmiPercent: parseValue(row[27]), risparmiPercentResto: parseValue(row[28]), risparmiMargine: row[29],
-                investimentiMin: parseValue(row[31]), investimentiPercent: parseValue(row[32]), investimentiPercentResto: parseValue(row[33]), investimentiMargine: row[34],
-                necessitaPortafoglioPct: parseValue(row[36]), svagoPortafoglioPct: parseValue(row[37]), rimborsarePortafoglioPct: parseValue(row[38]),
-                risparmiPortafoglioPct: parseValue(row[39]), investimentiPortafoglioPct: parseValue(row[40]), nonAllocatoPct: parseValue(row[41])
+                stipendio: parseValue(row[1]),
+                altro: parseValue(row[2]),
+                entrataTotale: parseValue(row[3]),
+                necessita: parseValue(row[5]),
+                svago: parseValue(row[6]),
+                daRimborsare: parseValue(row[7]),
+                giacenza: parseValue(row[10]),
+                disponibilita: parseValue(row[11]),
+                risparmi: parseValue(row[13]),
+                investimenti: parseValue(row[14]),
+                necessitaMax: parseValue(row[16]),
+                necessitaPercent: parseValue(row[17]),
+                necessitaPercentResto: parseValue(row[18]),
+                necessitaMargine: row[19],
+                svagoMax: parseValue(row[21]),
+                svagoPercent: parseValue(row[22]),
+                svagoPercentResto: parseValue(row[23]),
+                svagoMargine: row[24],
+                risparmiMin: parseValue(row[26]),
+                risparmiPercent: parseValue(row[27]),
+                risparmiPercentResto: parseValue(row[28]),
+                risparmiMargine: row[29],
+                investimentiMin: parseValue(row[31]),
+                investimentiPercent: parseValue(row[32]),
+                investimentiPercentResto: parseValue(row[33]),
+                investimentiMargine: row[34],
+                necessitaPortafoglioPct: parseValue(row[36]),
+                svagoPortafoglioPct: parseValue(row[37]),
+                rimborsarePortafoglioPct: parseValue(row[38]),
+                risparmiPortafoglioPct: parseValue(row[39]),
+                investimentiPortafoglioPct: parseValue(row[40]),
+                nonAllocatoPct: parseValue(row[41])
             };
         }
     }
@@ -157,7 +180,7 @@ function updateDashboard(mese, datiMensili) {
     svagoSpesaCorrenteEl.textContent = formatCurrency(dati.svago);
     svagoMaxEl.textContent = formatCurrency(dati.svagoMax);
     svagoMargineEl.textContent = typeof dati.svagoMargine === 'number' ? formatCurrency(dati.svagoMargine) : '--';
-    svagoChart = createOrUpdateChart(svagoChart, document.getElementById('svago-chart').getContext('2d'), [dati.svagoPercent, dati.svagoPercentResto], '#ef4444'); // Colore cambiato in ROSSO
+    svagoChart = createOrUpdateChart(svagoChart, document.getElementById('svago-chart').getContext('2d'), [dati.svagoPercent, dati.svagoPercentResto], '#ef4444');
 
     risparmiPercentEl.textContent = `${Math.round(dati.risparmiPercent * 100)}%`;
     risparmiValoreCorrenteEl.textContent = formatCurrency(dati.risparmi);
@@ -169,11 +192,25 @@ function updateDashboard(mese, datiMensili) {
     investimentiValoreCorrenteEl.textContent = formatCurrency(dati.investimenti);
     investimentiMinEl.textContent = formatCurrency(dati.investimentiMin);
     investimentiMargineEl.textContent = typeof dati.investimentiMargine === 'number' ? formatCurrency(dati.investimentiMargine) : '--';
-    investimentiChart = createOrUpdateChart(investimentiChart, document.getElementById('investimenti-chart').getContext('2d'), [dati.investimentiPercent, dati.investimentiPercentResto], '#a855f7'); // Colore cambiato in VIOLA
+    investimentiChart = createOrUpdateChart(investimentiChart, document.getElementById('investimenti-chart').getContext('2d'), [dati.investimentiPercent, dati.investimentiPercentResto], '#a855f7');
 
     portfolioEntrateValoreEl.textContent = formatCurrency(dati.entrataTotale);
     const portfolioCtx = document.getElementById('portfolio-chart').getContext('2d');
     const portfolioData = {
         labels: ['Necessità', 'Svago', 'Da Rimborsare', 'Risparmi', 'Investimenti', 'Non Allocato'],
         datasets: [{
-            data: [dati.necessitaPortafoglioPct, dati.svagoPortafoglioPct, dati.
+            data: [dati.necessitaPortafoglioPct, dati.svagoPortafoglioPct, dati.rimborsarePortafoglioPct, dati.risparmiPortafoglioPct, dati.investimentiPortafoglioPct, dati.nonAllocatoPct],
+            backgroundColor: ['#ef4444', '#dc2626', '#2563eb', '#f97316', '#a855f7', '#d1d5db'],
+            borderColor: '#ffffff', borderWidth: 2, hoverOffset: 4
+        }]
+    };
+
+    if (!portfolioChart) {
+        portfolioChart = new Chart(portfolioCtx, { type: 'doughnut', data: portfolioData, options: { responsive: true, maintainAspectRatio: true, cutout: '75%', plugins: { legend: { display: true, position: 'bottom', labels: { padding: 20, boxWidth: 12, font: { size: 12 } } }, tooltip: { enabled: true, callbacks: { label: ctx => `${ctx.label || ''}: ${(ctx.parsed * 100).toFixed(2)}%` } } } } });
+    } else {
+        portfolioChart.data.datasets[0].data = portfolioData.datasets[0].data;
+        portfolioChart.update();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', loadExcelData);
