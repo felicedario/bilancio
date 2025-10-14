@@ -37,14 +37,17 @@ const dashboardGrid = document.getElementById('dashboard-grid');
 const totalEntrateEl = document.getElementById('total-entrate');
 const stipendioValoreEl = document.getElementById('stipendio-valore');
 const altroValoreEl = document.getElementById('altro-valore');
-
+// Card Giacenza & Disponibilità
+const giacenzaValoreEl = document.getElementById('giacenza-valore');
+const disponibilitaValoreEl = document.getElementById('disponibilita-valore');
 // Card Spese
 const totalSpeseEl = document.getElementById('total-spese');
 const necessitaValoreEl = document.getElementById('necessita-valore');
 const svagoValoreEl = document.getElementById('svago-valore');
 const rimborsareValoreEl = document.getElementById('rimborsare-valore');
-const giacenzaValoreEl = document.getElementById('giacenza-valore');
-const disponibilitaValoreEl = document.getElementById('disponibilita-valore');
+// Card Risparmi & Investimenti
+const risparmiValoreEl = document.getElementById('risparmi-valore');
+const investimentiValoreEl = document.getElementById('investimenti-valore');
 // --------------- LOGICA PRINCIPALE ---------------
 
 // Funzione per caricare e processare il file Excel da GitHub
@@ -93,7 +96,9 @@ function processWorkbook(workbook) {
                 svago: parseValue(row[6]),
                 daRimborsare: parseValue(row[7]),
                 giacenza: parseValue(row[10]),      // <-- VALORE DA K4:K15
-            disponibilita: parseValue(row[11]) // <-- VALORE DA L4:L15
+            disponibilita: parseValue(row[11]), // <-- VALORE DA L4:L15
+                risparmi: parseValue(row[13]),      // <-- VALORE DA N4:N15
+            investimenti: parseValue(row[14]) // <-- VALORE DA O4:O15
             };
         }
     }
@@ -139,9 +144,12 @@ function updateDashboard(mese, datiMensili) {
     rimborsareValoreEl.textContent = formatCurrency(datiDelMese.daRimborsare);
     giacenzaValoreEl.textContent = formatCurrency(datiDelMese.giacenza);
     disponibilitaValoreEl.textContent = formatCurrency(datiDelMese.disponibilita);
+    risparmiValoreEl.textContent = formatCurrency(datiDelMese.risparmi);
+investimentiValoreEl.textContent = formatCurrency(datiDelMese.investimenti);
 }
 
 // Avvia il caricamento dei dati quando la pagina è pronta
 document.addEventListener('DOMContentLoaded', loadExcelData);
+
 
 
