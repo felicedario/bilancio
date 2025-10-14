@@ -192,7 +192,6 @@ header h1 {
     transform: translate(-50%, -50%);
     font-size: 1.75rem;
     font-weight: bold;
-    color: #d92d20; /* Rosso scuro */
 }
 
 .obiettivo-details {
@@ -203,7 +202,6 @@ header h1 {
 
 .obiettivo-title {
     font-weight: 600;
-    color: #d92d20; /* Rosso */
     font-size: 1rem;
     margin-bottom: 0.25rem;
 }
@@ -239,3 +237,8 @@ header h1 {
     font-weight: 600;
     color: #1f2937;
 }
+
+/* Colori specifici per obiettivi */
+.chart-percent.red, .obiettivo-title.red { color: #d92d20; }
+.chart-percent.blue, .obiettivo-title.blue { color: #3b82f6; }
+.chart-percent.orange, .obiettivo-title.orange { color: #f97316; }
