@@ -4,7 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Finanziaria Mensile</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pivottable/2.23.0/pivot.min.css">
     <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pivottable/2.23.0/pivot.min.js"></script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -195,10 +202,18 @@
                     </div>
             </div>
         </div>
+
+        <div class="analysis-section">
+            <button id="toggle-pivot-btn" class="pivot-button">Mostra Analisi Dettagliata</button>
+            <div id="pivot-container" class="hidden">
+                <h2>Analisi Interattiva delle Spese</h2>
+                <div id="pivot-table-wrapper">
+                    </div>
+            </div>
+        </div>
         
     </div>
 
     <script src="script.js"></script>
 </body>
 </html>
-
