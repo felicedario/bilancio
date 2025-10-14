@@ -23,12 +23,12 @@ jobs:
       - name: Download del file Excel
         run: |
           # L'ID del tuo file Excel è già inserito qui
-          FILE_ID="1k7Es36jk9s_mdT4t6RdbuSt460hdmpZA"
+          FILE_ID="1lWOhqY0vlShiPFRmzLWsHuBkRAeT1dUV"
           URL="https://drive.google.com/uc?export=download&id=${FILE_ID}"
           
-          # Usa il comando 'curl' per scaricare il file e salvarlo come 'ProvaApp.xlsm'
+          # Usa il comando 'curl' per scaricare il file e salvarlo come 'bilanciocorrente.xlsm'
           # Il flag -L segue eventuali reindirizzamenti (importante per Google Drive)
-          curl -L -o ProvaApp.xlsm "$URL"
+          curl -L -o bilanciocorrentep.xlsm "$URL"
 
       # Step 3: Fa il commit e il push del file SOLO se è cambiato
       - name: Commit e push automatico
@@ -39,7 +39,7 @@ jobs:
           commit_message: "chore(bot): Aggiornamento automatico file Excel"
           
           # Dice all'azione di considerare solo questo file
-          file_pattern: ProvaApp.xlsm
+          file_pattern: bilanciocorrente.xlsm
           
           # Aggiunge l'autore del commit
           commit_user_name: GitHub Actions Bot
