@@ -26,22 +26,21 @@
         <div id="status-message">Caricamento dati dal tuo foglio Excel...</div>
 
         <div id="dashboard-grid" class="hidden">
-            <!-- Card Giacenza (Statica) -->
+            <!-- Card Giacenza (Dinamica) -->
             <div class="card">
-                <div class="card-content">
-                    <h2>GIACENZA</h2>
-                    <p class="value blue">0,00 €</p>
-                </div>
-                <div class="card-footer">
-                     <div class="footer-item">
-                        <span>DISPONIBILITÀ</span>
-                        <span>0,00 €</span>
-                    </div>
-                    <!-- Segnaposto per allineamento -->
-                    <div class="footer-item placeholder"></div>
-                    <div class="footer-item placeholder"></div>
-                </div>
-            </div>
+    <div class="card-content">
+        <h2>GIACENZA</h2>
+        <p id="giacenza-valore" class="value blue">0,00 €</p>
+    </div>
+    <div class="card-footer">
+          <div class="footer-item">
+              <span>DISPONIBILITÀ</span>
+              <span id="disponibilita-valore">0,00 €</span>
+          </div>
+        <div class="footer-item placeholder"></div>
+        <div class="footer-item placeholder"></div>
+    </div>
+</div>
 
             <!-- Card Entrate (Dinamica) -->
             <div class="card">
@@ -108,4 +107,5 @@
     <script src="script.js"></script>
 </body>
 </html>
+
 
