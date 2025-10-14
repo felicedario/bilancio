@@ -17,7 +17,7 @@
 
         <div class="control-panel">
             <div id="month-buttons-container" class="month-grid">
-                </div>
+            </div>
         </div>
 
         <div id="status-message">Caricamento dati dal tuo foglio Excel...</div>
@@ -29,10 +29,10 @@
                     <p id="giacenza-valore" class="value blue">0,00 €</p>
                 </div>
                 <div class="card-footer">
-                      <div class="footer-item">
-                          <span>DISPONIBILITÀ</span>
-                          <span id="disponibilita-valore">0,00 €</span>
-                      </div>
+                    <div class="footer-item">
+                        <span>DISPONIBILITÀ</span>
+                        <span id="disponibilita-valore">0,00 €</span>
+                    </div>
                     <div class="footer-item placeholder"></div>
                     <div class="footer-item placeholder"></div>
                 </div>
@@ -180,7 +180,21 @@
                 </div>
             </div>
         </div>
+        
+        <div id="portafoglio-section" class="hidden">
+            <h2>PORTAFOGLIO</h2>
+            <div class="card">
+                <div class="portafoglio-container">
+                    <canvas id="portfolio-chart"></canvas>
+                    <div id="portfolio-center-value" class="portfolio-value">
+                        <span>ENTRATE</span>
+                        <span id="portfolio-entrate-valore">0,00 €</span>
+                    </div>
+                </div>
+            </div>
         </div>
+        
+    </div>
 
     <script src="script.js"></script>
 </body>
