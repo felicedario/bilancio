@@ -92,6 +92,42 @@
             </div>
         </div>
 
+        <div id="portafoglio-section" class="hidden">
+            <h2>PORTAFOGLIO</h2>
+            <div class="portafoglio-container">
+                <div class="portafoglio-details">
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">NECESSITÀ</span>
+                            <span id="portafoglio-necessita" class="detail-value">0%</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">SVAGO</span>
+                            <span id="portafoglio-svago" class="detail-value">0%</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">DA RIMB.</span>
+                            <span id="portafoglio-rimborsare" class="detail-value">0%</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">RISPARMI</span>
+                            <span id="portafoglio-risparmi" class="detail-value">0%</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">INVESTIMENTI</span>
+                            <span id="portafoglio-investimenti" class="detail-value">0%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="portafoglio-chart-container">
+                    <canvas id="portafoglio-chart"></canvas>
+                    <div id="portafoglio-center-text" class="chart-center-text">
+                        <span>ENTRATE</span>
+                        <span class="value">0,00 €</span>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="obiettivi-section" class="hidden">
             <h2>OBIETTIVI</h2>
             <div class="obiettivi-grid">
@@ -115,7 +151,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="obiettivo-card">
                     <div class="chart-container">
                         <canvas id="svago-chart"></canvas>
@@ -136,7 +171,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="obiettivo-card">
                     <div class="chart-container">
                         <canvas id="risparmi-chart"></canvas>
@@ -157,7 +191,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="obiettivo-card">
                     <div class="chart-container">
                         <canvas id="investimenti-chart"></canvas>
