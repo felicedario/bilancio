@@ -75,8 +75,14 @@ const investimentiValoreCorrenteEl = document.getElementById('investimenti-valor
 const investimentiMinEl = document.getElementById('investimenti-min');
 const investimentiMargineEl = document.getElementById('investimenti-margine');
 
+// Sezione Portafoglio
+const portafoglioSection = document.getElementById('portafoglio-section');
+const portfolioEntrateValoreEl = document.getElementById('portfolio-entrate-valore');
+
+
 // Variabili per le istanze dei grafici
 let necessitaChart, svagoChart, risparmiChart, investimentiChart;
+let portfolioChart;
 
 // --------------- LOGICA PRINCIPALE ---------------
 
@@ -118,6 +124,7 @@ function processWorkbook(workbook) {
                 // Cards Principali
                 stipendio: parseValue(row[1]),
                 altro: parseValue(row[2]),
+                entrataTotale: parseValue(row[3]), // Entrate totali dalla colonna D
                 necessita: parseValue(row[5]),
                 svago: parseValue(row[6]),
                 daRimborsare: parseValue(row[7]),
@@ -144,7 +151,14 @@ function processWorkbook(workbook) {
                 investimentiMin: parseValue(row[31]),
                 investimentiPercent: parseValue(row[32]),
                 investimentiPercentResto: parseValue(row[33]),
-                investimentiMargine: row[34]
+                investimentiMargine: row[34],
+                // Dati per Grafico Portafoglio (AK-AP)
+                necessitaPortafoglioPct: parseValue(row[36]), // Colonna AK
+                svagoPortafoglioPct: parseValue(row[37]),     // Colonna AL
+                rimborsarePortafoglioPct: parseValue(row[38]),// Colonna AM
+                risparmiPortafoglioPct: parseValue(row[39]),  // Colonna AN
+                investimentiPortafoglioPct: parseValue(row[40]),// Colonna AO
+                nonAllocatoPct: parseValue(row[41])           // Colonna AP
             };
         }
     }
@@ -152,6 +166,7 @@ function processWorkbook(workbook) {
     statusMessage.style.display = 'none';
     dashboardGrid.classList.remove('hidden');
     obiettiviSection.classList.remove('hidden');
+    portafoglioSection.classList.remove('hidden');
 
     monthButtonsContainer.innerHTML = '';
     mesi.forEach((mese) => {
@@ -257,6 +272,78 @@ function updateDashboard(mese, datiMensili) {
     investimentiMargineEl.textContent = typeof datiDelMese.investimentiMargine === 'number' ? formatCurrency(datiDelMese.investimentiMargine) : '--';
     const investimentiCtx = document.getElementById('investimenti-chart').getContext('2d');
     investimentiChart = createOrUpdateChart(investimentiChart, investimentiCtx, [datiDelMese.investimentiPercent, datiDelMese.investimentiPercentResto], '#f97316');
+
+    // --- AGGIORNAMENTO SEZIONE PORTAFOGLIO ---
+    portfolioEntrateValoreEl.textContent = formatCurrency(datiDelMese.entrataTotale);
+
+    const portfolioCtx = document.getElementById('portfolio-chart').getContext('2d');
+    const portfolioData = {
+        labels: ['Necessità', 'Svago', 'Da Rimborsare', 'Risparmi', 'Investimenti', 'Non Allocato'],
+        datasets: [{
+            data: [
+                datiDelMese.necessitaPortafoglioPct,
+                datiDelMese.svagoPortafoglioPct,
+                datiDelMese.rimborsarePortafoglioPct,
+                datiDelMese.risparmiPortafoglioPct,
+                datiDelMese.investimentiPortafoglioPct,
+                datiDelMese.nonAllocatoPct
+            ],
+            backgroundColor: [
+                '#ef4444', // Red (Necessità)
+                '#3b82f6', // Blue (Svago)
+                '#a855f7', // Purple (Da Rimborsare)
+                '#f97316', // Orange (Risparmi)
+                '#eab308', // Yellow (Investimenti)
+                '#d1d5db'  // Grey (Non Allocato)
+            ],
+            borderColor: '#ffffff',
+            borderWidth: 2,
+            hoverOffset: 4
+        }]
+    };
+
+    if (!portfolioChart) {
+        portfolioChart = new Chart(portfolioCtx, {
+            type: 'doughnut',
+            data: portfolioData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                cutout: '75%',
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            boxWidth: 12,
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        enabled: true,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += (context.parsed * 100).toFixed(2) + '%';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    } else {
+        portfolioChart.data.datasets[0].data = portfolioData.datasets[0].data;
+        portfolioChart.update();
+    }
 }
 
 document.addEventListener('DOMContentLoaded', loadExcelData);
