@@ -54,17 +54,32 @@ const investimentiValoreEl = document.getElementById('investimenti-valore');
 
 // Sezione Obiettivi
 const obiettiviSection = document.getElementById('obiettivi-section');
+// Obiettivo Necessità
 const necessitaPercentEl = document.getElementById('necessita-percent');
 const necessitaSpesaCorrenteEl = document.getElementById('necessita-spesa-corrente');
 const necessitaMaxEl = document.getElementById('necessita-max');
 const necessitaMargineEl = document.getElementById('necessita-margine');
+// Obiettivo Svago
+const svagoPercentEl = document.getElementById('svago-percent');
+const svagoSpesaCorrenteEl = document.getElementById('svago-spesa-corrente');
+const svagoMaxEl = document.getElementById('svago-max');
+const svagoMargineEl = document.getElementById('svago-margine');
+// Obiettivo Risparmi
+const risparmiPercentEl = document.getElementById('risparmi-percent');
+const risparmiValoreCorrenteEl = document.getElementById('risparmi-valore-corrente');
+const risparmiMinEl = document.getElementById('risparmi-min');
+const risparmiMargineEl = document.getElementById('risparmi-margine');
+// Obiettivo Investimenti
+const investimentiPercentEl = document.getElementById('investimenti-percent');
+const investimentiValoreCorrenteEl = document.getElementById('investimenti-valore-corrente');
+const investimentiMinEl = document.getElementById('investimenti-min');
+const investimentiMargineEl = document.getElementById('investimenti-margine');
 
-// Variabile per contenere l'istanza del grafico
-let necessitaChart;
+// Variabili per le istanze dei grafici
+let necessitaChart, svagoChart, risparmiChart, investimentiChart;
 
 // --------------- LOGICA PRINCIPALE ---------------
 
-// Funzione per caricare e processare il file Excel da GitHub
 async function loadExcelData() {
     try {
         statusMessage.textContent = 'Caricamento dati dal tuo repository...';
@@ -74,21 +89,17 @@ async function loadExcelData() {
         }
         const arrayBuffer = await response.arrayBuffer();
         const workbook = XLSX.read(arrayBuffer, { type: 'array' });
-
         processWorkbook(workbook);
-
     } catch (error) {
         console.error("Errore nel caricamento o processamento del file Excel:", error);
         statusMessage.textContent = `Errore: Impossibile caricare i dati. Dettagli: ${error.message}`;
     }
 }
 
-// Funzione per elaborare i dati estratti dal file
 function processWorkbook(workbook) {
     if (!workbook.SheetNames.includes(sheetName)) {
         throw new Error(`Foglio di lavoro "${sheetName}" non trovato nel file.`);
     }
-
     const worksheet = workbook.Sheets[sheetName];
     const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: "" });
 
@@ -104,24 +115,36 @@ function processWorkbook(workbook) {
         if (mese && typeof mese === 'string' && mese.trim() !== '') {
             mesi.push(mese);
             datiMensili[mese] = {
-                // Entrate
+                // Cards Principali
                 stipendio: parseValue(row[1]),
                 altro: parseValue(row[2]),
-                // Spese
                 necessita: parseValue(row[5]),
                 svago: parseValue(row[6]),
                 daRimborsare: parseValue(row[7]),
-                // Giacenza
                 giacenza: parseValue(row[10]),
                 disponibilita: parseValue(row[11]),
-                // Risparmi & Investimenti
                 risparmi: parseValue(row[13]),
                 investimenti: parseValue(row[14]),
-                // Dati per Obiettivi
+                // Obiettivo Necessità (Q-T)
                 necessitaMax: parseValue(row[16]),
                 necessitaPercent: parseValue(row[17]),
                 necessitaPercentResto: parseValue(row[18]),
-                necessitaMargine: row[19]
+                necessitaMargine: row[19],
+                // Obiettivo Svago (V-Y)
+                svagoMax: parseValue(row[21]),
+                svagoPercent: parseValue(row[22]),
+                svagoPercentResto: parseValue(row[23]),
+                svagoMargine: row[24],
+                // Obiettivo Risparmi (AA-AD)
+                risparmiMin: parseValue(row[26]),
+                risparmiPercent: parseValue(row[27]),
+                risparmiPercentResto: parseValue(row[28]),
+                risparmiMargine: row[29],
+                // Obiettivo Investimenti (AF-AI)
+                investimentiMin: parseValue(row[31]),
+                investimentiPercent: parseValue(row[32]),
+                investimentiPercentResto: parseValue(row[33]),
+                investimentiMargine: row[34]
             };
         }
     }
@@ -146,61 +169,20 @@ function processWorkbook(workbook) {
     }
 }
 
-// Funzione per aggiornare i valori nella dashboard
-function updateDashboard(mese, datiMensili) {
-    const datiDelMese = datiMensili[mese];
-    if (!datiDelMese) return;
-
-    document.querySelectorAll('.month-button').forEach(btn => {
-        btn.classList.toggle('active', btn.textContent.toLowerCase() === mese.toLowerCase());
-    });
-    
-    // Aggiorna Card Giacenza
-    giacenzaValoreEl.textContent = formatCurrency(datiDelMese.giacenza);
-    disponibilitaValoreEl.textContent = formatCurrency(datiDelMese.disponibilita);
-
-    // Aggiorna Card Entrate
-    const totaleEntrate = datiDelMese.stipendio + datiDelMese.altro;
-    totalEntrateEl.textContent = formatCurrency(totaleEntrate);
-    stipendioValoreEl.textContent = formatCurrency(datiDelMese.stipendio);
-    altroValoreEl.textContent = formatCurrency(datiDelMese.altro);
-
-    // Aggiorna Card Spese
-    const totaleSpese = datiDelMese.necessita + datiDelMese.svago + datiDelMese.daRimborsare;
-    totalSpeseEl.textContent = formatCurrency(totaleSpese);
-    necessitaValoreEl.textContent = formatCurrency(datiDelMese.necessita);
-    svagoValoreEl.textContent = formatCurrency(datiDelMese.svago);
-    rimborsareValoreEl.textContent = formatCurrency(datiDelMese.daRimborsare);
-
-    // Aggiorna Card Risparmi e Investimenti
-    risparmiValoreEl.textContent = formatCurrency(datiDelMese.risparmi);
-    investimentiValoreEl.textContent = formatCurrency(datiDelMese.investimenti);
-
-    // --- AGGIORNAMENTO SEZIONE OBIETTIVI ---
-    const ctx = document.getElementById('necessita-chart').getContext('2d');
-    const percentValue = datiDelMese.necessitaPercent;
-    
-    // Aggiorna i testi
-    necessitaPercentEl.textContent = `${Math.round(percentValue * 100)}%`;
-    necessitaSpesaCorrenteEl.textContent = formatCurrency(datiDelMese.necessita);
-    necessitaMaxEl.textContent = formatCurrency(datiDelMese.necessitaMax);
-    necessitaMargineEl.textContent = typeof datiDelMese.necessitaMargine === 'number' 
-        ? formatCurrency(datiDelMese.necessitaMargine) 
-        : '--';
-
+// Funzione generica per creare o aggiornare un grafico
+function createOrUpdateChart(chartInstance, context, data, color) {
     const chartData = {
         datasets: [{
-            data: [percentValue, datiDelMese.necessitaPercentResto],
-            backgroundColor: ['#d92d20', '#f3f4f6'], // Rosso e Grigio chiaro
-            borderColor: ['#d92d20', '#f3f4f6'],
+            data: data,
+            backgroundColor: [color, '#f3f4f6'],
+            borderColor: [color, '#f3f4f6'],
             borderWidth: 1,
-            cutout: '80%' // Rende il grafico una "ciambella" sottile
+            cutout: '80%'
         }]
     };
 
-    // Se il grafico non esiste, crealo. Altrimenti, aggiorna solo i dati.
-    if (!necessitaChart) {
-        necessitaChart = new Chart(ctx, {
+    if (!chartInstance) {
+        return new Chart(context, {
             type: 'doughnut',
             data: chartData,
             options: {
@@ -213,10 +195,68 @@ function updateDashboard(mese, datiMensili) {
             }
         });
     } else {
-        necessitaChart.data.datasets[0].data = chartData.datasets[0].data;
-        necessitaChart.update();
+        chartInstance.data.datasets[0].data = data;
+        chartInstance.update();
+        return chartInstance;
     }
 }
 
-// Avvia il caricamento dei dati quando la pagina è pronta
+function updateDashboard(mese, datiMensili) {
+    const datiDelMese = datiMensili[mese];
+    if (!datiDelMese) return;
+
+    document.querySelectorAll('.month-button').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.toLowerCase() === mese.toLowerCase());
+    });
+    
+    // Aggiornamento Cards Principali
+    giacenzaValoreEl.textContent = formatCurrency(datiDelMese.giacenza);
+    disponibilitaValoreEl.textContent = formatCurrency(datiDelMese.disponibilita);
+    const totaleEntrate = datiDelMese.stipendio + datiDelMese.altro;
+    totalEntrateEl.textContent = formatCurrency(totaleEntrate);
+    stipendioValoreEl.textContent = formatCurrency(datiDelMese.stipendio);
+    altroValoreEl.textContent = formatCurrency(datiDelMese.altro);
+    const totaleSpese = datiDelMese.necessita + datiDelMese.svago + datiDelMese.daRimborsare;
+    totalSpeseEl.textContent = formatCurrency(totaleSpese);
+    necessitaValoreEl.textContent = formatCurrency(datiDelMese.necessita);
+    svagoValoreEl.textContent = formatCurrency(datiDelMese.svago);
+    rimborsareValoreEl.textContent = formatCurrency(datiDelMese.daRimborsare);
+    risparmiValoreEl.textContent = formatCurrency(datiDelMese.risparmi);
+    investimentiValoreEl.textContent = formatCurrency(datiDelMese.investimenti);
+
+    // --- AGGIORNAMENTO SEZIONE OBIETTIVI ---
+
+    // 1. Obiettivo Necessità
+    necessitaPercentEl.textContent = `${Math.round(datiDelMese.necessitaPercent * 100)}%`;
+    necessitaSpesaCorrenteEl.textContent = formatCurrency(datiDelMese.necessita);
+    necessitaMaxEl.textContent = formatCurrency(datiDelMese.necessitaMax);
+    necessitaMargineEl.textContent = typeof datiDelMese.necessitaMargine === 'number' ? formatCurrency(datiDelMese.necessitaMargine) : '--';
+    const necessitaCtx = document.getElementById('necessita-chart').getContext('2d');
+    necessitaChart = createOrUpdateChart(necessitaChart, necessitaCtx, [datiDelMese.necessitaPercent, datiDelMese.necessitaPercentResto], '#d92d20');
+
+    // 2. Obiettivo Svago
+    svagoPercentEl.textContent = `${Math.round(datiDelMese.svagoPercent * 100)}%`;
+    svagoSpesaCorrenteEl.textContent = formatCurrency(datiDelMese.svago);
+    svagoMaxEl.textContent = formatCurrency(datiDelMese.svagoMax);
+    svagoMargineEl.textContent = typeof datiDelMese.svagoMargine === 'number' ? formatCurrency(datiDelMese.svagoMargine) : '--';
+    const svagoCtx = document.getElementById('svago-chart').getContext('2d');
+    svagoChart = createOrUpdateChart(svagoChart, svagoCtx, [datiDelMese.svagoPercent, datiDelMese.svagoPercentResto], '#3b82f6');
+
+    // 3. Obiettivo Risparmi
+    risparmiPercentEl.textContent = `${Math.round(datiDelMese.risparmiPercent * 100)}%`;
+    risparmiValoreCorrenteEl.textContent = formatCurrency(datiDelMese.risparmi);
+    risparmiMinEl.textContent = formatCurrency(datiDelMese.risparmiMin);
+    risparmiMargineEl.textContent = typeof datiDelMese.risparmiMargine === 'number' ? formatCurrency(datiDelMese.risparmiMargine) : '--';
+    const risparmiCtx = document.getElementById('risparmi-chart').getContext('2d');
+    risparmiChart = createOrUpdateChart(risparmiChart, risparmiCtx, [datiDelMese.risparmiPercent, datiDelMese.risparmiPercentResto], '#f97316');
+
+    // 4. Obiettivo Investimenti
+    investimentiPercentEl.textContent = `${Math.round(datiDelMese.investimentiPercent * 100)}%`;
+    investimentiValoreCorrenteEl.textContent = formatCurrency(datiDelMese.investimenti);
+    investimentiMinEl.textContent = formatCurrency(datiDelMese.investimentiMin);
+    investimentiMargineEl.textContent = typeof datiDelMese.investimentiMargine === 'number' ? formatCurrency(datiDelMese.investimentiMargine) : '--';
+    const investimentiCtx = document.getElementById('investimenti-chart').getContext('2d');
+    investimentiChart = createOrUpdateChart(investimentiChart, investimentiCtx, [datiDelMese.investimentiPercent, datiDelMese.investimentiPercentResto], '#f97316');
+}
+
 document.addEventListener('DOMContentLoaded', loadExcelData);
