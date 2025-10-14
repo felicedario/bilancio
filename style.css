@@ -1,0 +1,244 @@
+/* Impostazioni generali e font */
+body {
+    background-color: #eef2f9;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.container {
+    max-width: 1200px;
+    width: 100%;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+header h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1f2937;
+}
+
+/* Pannello di controllo con i mesi */
+.control-panel {
+    background-color: white;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.month-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+}
+
+.month-button {
+    background-color: #f3f4f6;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    text-align: center;
+}
+
+.month-button:hover {
+    background-color: #e5e7eb;
+}
+
+.month-button.active {
+    background-color: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+}
+
+/* Messaggio di stato */
+#status-message {
+    text-align: center;
+    color: #6b7280;
+    font-size: 1rem;
+    padding: 2rem;
+}
+
+/* Griglia delle card */
+#dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+#dashboard-grid.hidden {
+    display: none;
+}
+
+.card {
+    background-color: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+}
+
+.card-content {
+    flex-grow: 1; /* Forza questa sezione a espandersi */
+    min-height: 90px; /* Altezza minima per la parte superiore */
+}
+
+.card h2 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #6b7280;
+    margin: 0 0 0.5rem 0;
+    text-transform: uppercase;
+}
+
+.card .value {
+    font-size: 2.25rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Colori specifici per i valori */
+.value.blue { color: #3b82f6; }
+.value.green { color: #10b981; }
+.value.red { color: #ef4444; }
+.value.orange { color: #f97316; }
+
+/* Sezione inferiore della card */
+.card-footer {
+    border-top: 1px solid #e5e7eb;
+    padding-top: 1rem;
+    margin-top: 1rem;
+}
+
+.footer-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+    color: #4b5563;
+    min-height: 1.5rem; /* Altezza minima per ogni riga */
+}
+
+.footer-item span:first-child {
+    font-weight: 500;
+    text-transform: uppercase; /* TESTO IN MAIUSCOLO */
+}
+
+.footer-item.placeholder {
+    visibility: hidden; /* Nasconde i segnaposto ma mantiene lo spazio */
+}
+
+
+/* --------------- STILI SEZIONE OBIETTIVI --------------- */
+
+#obiettivi-section {
+    margin-top: 2rem;
+}
+
+#obiettivi-section h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+#obiettivi-section.hidden {
+    display: none;
+}
+
+.obiettivi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.obiettivo-card {
+    background-color: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.chart-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0; /* Impedisce al grafico di rimpicciolirsi */
+}
+
+.chart-percent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.75rem;
+    font-weight: bold;
+}
+
+.obiettivo-details {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.obiettivo-title {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.obiettivo-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1f2937;
+    line-height: 1;
+}
+
+.obiettivo-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.footer-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-col span:first-child {
+    font-size: 0.75rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+}
+
+.footer-col span:last-child {
+    font-weight: 600;
+    color: #1f2937;
+}
+
+/* Colori specifici per obiettivi */
+.chart-percent.red, .obiettivo-title.red { color: #d92d20; }
+.chart-percent.blue, .obiettivo-title.blue { color: #3b82f6; }
+.chart-percent.orange, .obiettivo-title.orange { color: #f97316; }
