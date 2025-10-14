@@ -242,3 +242,52 @@ header h1 {
 .chart-percent.red, .obiettivo-title.red { color: #d92d20; }
 .chart-percent.blue, .obiettivo-title.blue { color: #3b82f6; }
 .chart-percent.orange, .obiettivo-title.orange { color: #f97316; }
+
+/* --------------- STILI SEZIONE PORTAFOGLIO --------------- */
+
+#portafoglio-section {
+    margin-top: 2rem;
+}
+
+#portafoglio-section h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+#portafoglio-section.hidden {
+    display: none;
+}
+
+.portafoglio-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px; /* Limita la larghezza massima del grafico */
+    margin: 0 auto; /* Centra il grafico nel card */
+    padding-top: 1rem;
+}
+
+.portfolio-value {
+    position: absolute;
+    top: 45%; /* Leggermente sopra il centro per fare spazio alla legenda */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.portfolio-value span:first-child {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+}
+
+.portfolio-value span:last-child {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #1f2937;
+}
