@@ -38,7 +38,7 @@ header h1 {
 
 .month-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     gap: 0.75rem;
 }
 
@@ -117,7 +117,7 @@ header h1 {
 .value.green { color: #10b981; }
 .value.red { color: #ef4444; }
 .value.orange { color: #f97316; }
-.value.purple { color: #a855f7; } /* NUOVO */
+.value.purple { color: #a855f7; }
 
 /* Sezione inferiore della card */
 .card-footer {
@@ -240,11 +240,9 @@ header h1 {
 /* Colori specifici per obiettivi */
 .chart-percent.red, .obiettivo-title.red { color: #ef4444; }
 .chart-percent.orange, .obiettivo-title.orange { color: #f97316; }
-.chart-percent.purple, .obiettivo-title.purple { color: #a855f7; } /* NUOVO */
-
+.chart-percent.purple, .obiettivo-title.purple { color: #a855f7; }
 
 /* --------------- STILI SEZIONE PORTAFOGLIO --------------- */
-
 #portafoglio-section {
     margin-top: 2rem;
 }
@@ -261,69 +259,66 @@ header h1 {
     display: none;
 }
 
-/* Modifica il contenitore della card per abilitare il flexbox per affiancare grafico e legenda */
 #portafoglio-section .card {
-    display: flex; /* Abilita flexbox */
-    flex-direction: column; /* Imposta direzione colonna di default per mobile */
-    align-items: center; /* Centra gli elementi */
-    gap: 1.5rem; /* Spazio tra gli elementi */
-    padding: 1.5rem; /* Assicurati che il padding sia presente */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
 }
 
-@media (min-width: 768px) { /* Affianca gli elementi su schermi più grandi */
+@media (min-width: 768px) {
     #portafoglio-section .card {
-        flex-direction: row; /* Direzione riga su desktop */
-        justify-content: center; /* Centra gli elementi orizzontalmente */
-        align-items: flex-start; /* Allinea in alto per la legenda */
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
     }
 }
-
 
 .portafoglio-container {
     position: relative;
     width: 100%;
-    max-width: 250px; /* Riduci la larghezza massima del grafico per fare spazio */
-    min-width: 200px; /* Larghezza minima per evitare che si rimpicciolisca troppo */
-    height: 250px; /* Imposta un'altezza fissa per il grafico */
-    margin: 0; /* Rimuovi margin: 0 auto; per il flexbox */
-    padding-top: 0; /* Rimuovi padding-top se non necessario */
+    max-width: 250px;
+    min-width: 200px;
+    height: 250px;
+    margin: 0;
+    padding-top: 0;
 }
 
 .portfolio-value {
     position: absolute;
-    top: 50%; /* Centra verticalmente */
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
     display: flex;
     flex-direction: column;
-    pointer-events: none; /* Rende il testo non cliccabile per non interferire con il grafico */
+    pointer-events: none;
 }
 
 .portfolio-value span:first-child {
-    font-size: 0.8rem; /* Riduci la dimensione del font */
+    font-size: 0.8rem;
     font-weight: 600;
     color: #6b7280;
     text-transform: uppercase;
 }
 
 .portfolio-value span:last-child {
-    font-size: 1.5rem; /* Riduci la dimensione del font */
+    font-size: 1.5rem;
     font-weight: bold;
     color: #1f2937;
 }
 
-/* Stili per la legenda personalizzata */
 .portfolio-legend {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem; /* Spazio tra gli elementi della legenda */
+    gap: 0.75rem;
     font-size: 0.95rem;
     color: #374151;
     line-height: 1.4;
-    padding: 1rem 0; /* Padding interno */
-    width: 100%; /* Occupa tutta la larghezza su mobile */
-    max-width: 250px; /* Larghezza massima su desktop */
+    padding: 1rem 0;
+    width: 100%;
+    max-width: 250px;
 }
 
 .portfolio-legend-item {
@@ -336,7 +331,7 @@ header h1 {
     height: 1rem;
     border-radius: 0.25rem;
     margin-right: 0.75rem;
-    flex-shrink: 0; /* Impedisce che il quadratino si rimpicciolisca */
+    flex-shrink: 0;
 }
 
 .portfolio-legend-text {
@@ -355,3 +350,55 @@ header h1 {
     color: #1f2937;
 }
 
+
+/* --------------- STILI SEZIONE ANALISI PIVOT --------------- */
+.analysis-section {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.pivot-button {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    margin-bottom: 1rem;
+}
+
+.pivot-button:hover {
+    background-color: #2563eb;
+}
+
+#pivot-container {
+    background-color: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    text-align: left;
+}
+
+#pivot-container h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+#pivot-container.hidden {
+    display: none;
+}
+
+.pvtUi {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #374151;
+}
+
+.pvtTable {
+    font-size: 0.9rem;
+}
