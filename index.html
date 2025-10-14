@@ -44,14 +44,8 @@
                     <p id="total-entrate" class="value green">0,00 €</p>
                 </div>
                 <div class="card-footer">
-                    <div class="footer-item">
-                        <span>STIPENDIO</span>
-                        <span id="stipendio-valore">0,00 €</span>
-                    </div>
-                    <div class="footer-item">
-                        <span>ALTRO</span>
-                        <span id="altro-valore">0,00 €</span>
-                    </div>
+                    <div class="footer-item"><span>STIPENDIO</span><span id="stipendio-valore">0,00 €</span></div>
+                    <div class="footer-item"><span>ALTRO</span><span id="altro-valore">0,00 €</span></div>
                     <div class="footer-item placeholder"></div>
                 </div>
             </div>
@@ -62,18 +56,9 @@
                     <p id="total-spese" class="value red">0,00 €</p>
                 </div>
                 <div class="card-footer">
-                    <div class="footer-item">
-                        <span>NECESSITÀ</span>
-                        <span id="necessita-valore">0,00 €</span>
-                    </div>
-                    <div class="footer-item">
-                        <span>SVAGO</span>
-                        <span id="svago-valore">0,00 €</span>
-                    </div>
-                    <div class="footer-item">
-                        <span>DA RIMBORSARE</span>
-                        <span id="rimborsare-valore">0,00 €</span>
-                    </div>
+                    <div class="footer-item"><span>NECESSITÀ</span><span id="necessita-valore">0,00 €</span></div>
+                    <div class="footer-item"><span>SVAGO</span><span id="svago-valore">0,00 €</span></div>
+                    <div class="footer-item"><span>DA RIMBORSARE</span><span id="rimborsare-valore">0,00 €</span></div>
                 </div>
             </div>
 
@@ -95,39 +80,16 @@
         <div id="portafoglio-section" class="hidden">
             <h2>PORTAFOGLIO</h2>
             <div class="portafoglio-container">
-                <div class="portafoglio-details">
-                    <div class="detail-grid">
-                        <div class="detail-item">
-                            <span class="detail-label">NECESSITÀ</span>
-                            <span id="portafoglio-necessita" class="detail-value">0%</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">SVAGO</span>
-                            <span id="portafoglio-svago" class="detail-value">0%</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">DA RIMB.</span>
-                            <span id="portafoglio-rimborsare" class="detail-value">0%</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">RISPARMI</span>
-                            <span id="portafoglio-risparmi" class="detail-value">0%</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">INVESTIMENTI</span>
-                            <span id="portafoglio-investimenti" class="detail-value">0%</span>
-                        </div>
-                    </div>
-                </div>
                 <div class="portafoglio-chart-container">
                     <canvas id="portafoglio-chart"></canvas>
-                    <div id="portafoglio-center-text" class="chart-center-text">
+                    <div class="chart-center-text">
                         <span>ENTRATE</span>
-                        <span class="value">0,00 €</span>
+                        <span id="portafoglio-entrate" class="value">0,00 €</span>
                     </div>
                 </div>
             </div>
         </div>
+
         <div id="obiettivi-section" class="hidden">
             <h2>OBIETTIVI</h2>
             <div class="obiettivi-grid">
@@ -140,17 +102,12 @@
                         <span class="obiettivo-title red">NECESSITÀ</span>
                         <span id="necessita-spesa-corrente" class="obiettivo-value">0,00 €</span>
                         <div class="obiettivo-footer">
-                            <div class="footer-col">
-                                <span>MAX</span>
-                                <span id="necessita-max">0,00 €</span>
-                            </div>
-                            <div class="footer-col">
-                                <span>MARGINE</span>
-                                <span id="necessita-margine">--</span>
-                            </div>
+                            <div class="footer-col"><span>MAX</span><span id="necessita-max">0,00 €</span></div>
+                            <div class="footer-col"><span>MARGINE</span><span id="necessita-margine">--</span></div>
                         </div>
                     </div>
                 </div>
+
                 <div class="obiettivo-card">
                     <div class="chart-container">
                         <canvas id="svago-chart"></canvas>
@@ -160,17 +117,12 @@
                         <span class="obiettivo-title blue">SVAGO</span>
                         <span id="svago-spesa-corrente" class="obiettivo-value">0,00 €</span>
                         <div class="obiettivo-footer">
-                            <div class="footer-col">
-                                <span>MAX</span>
-                                <span id="svago-max">0,00 €</span>
-                            </div>
-                            <div class="footer-col">
-                                <span>MARGINE</span>
-                                <span id="svago-margine">--</span>
-                            </div>
+                            <div class="footer-col"><span>MAX</span><span id="svago-max">0,00 €</span></div>
+                            <div class="footer-col"><span>MARGINE</span><span id="svago-margine">--</span></div>
                         </div>
                     </div>
                 </div>
+
                 <div class="obiettivo-card">
                     <div class="chart-container">
                         <canvas id="risparmi-chart"></canvas>
@@ -180,17 +132,12 @@
                         <span class="obiettivo-title orange">RISPARMI</span>
                         <span id="risparmi-valore-corrente" class="obiettivo-value">0,00 €</span>
                         <div class="obiettivo-footer">
-                            <div class="footer-col">
-                                <span>MIN</span>
-                                <span id="risparmi-min">0,00 €</span>
-                            </div>
-                            <div class="footer-col">
-                                <span>MARGINE</span>
-                                <span id="risparmi-margine">--</span>
-                            </div>
+                            <div class="footer-col"><span>MIN</span><span id="risparmi-min">0,00 €</span></div>
+                            <div class="footer-col"><span>MARGINE</span><span id="risparmi-margine">--</span></div>
                         </div>
                     </div>
                 </div>
+
                 <div class="obiettivo-card">
                     <div class="chart-container">
                         <canvas id="investimenti-chart"></canvas>
@@ -200,20 +147,14 @@
                         <span class="obiettivo-title orange">INVESTIMENTI</span>
                         <span id="investimenti-valore-corrente" class="obiettivo-value">0,00 €</span>
                         <div class="obiettivo-footer">
-                            <div class="footer-col">
-                                <span>MIN</span>
-                                <span id="investimenti-min">0,00 €</span>
-                            </div>
-                            <div class="footer-col">
-                                <span>MARGINE</span>
-                                <span id="investimenti-margine">--</span>
-                            </div>
+                            <div class="footer-col"><span>MIN</span><span id="investimenti-min">0,00 €</span></div>
+                            <div class="footer-col"><span>MARGINE</span><span id="investimenti-margine">--</span></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
