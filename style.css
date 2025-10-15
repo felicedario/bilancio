@@ -355,3 +355,19 @@ header h1 {
     color: #1f2937;
 }
 
+/* ----- NUOVI STILI AGGIUNTI ----- */
+
+/* Stili per il contenitore del pulsante annuale */
+#year-button-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem; /* Spazio tra il pulsante 2025 e i mesi */
+}
+
+/* Stile specifico per il pulsante 2025 per renderlo più evidente */
+#year-button-container .month-button {
+    width: 50%;
+    max-width: 250px;
+    font-weight: bold;
+    font-size: 1rem;
+}
