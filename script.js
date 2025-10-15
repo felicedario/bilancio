@@ -79,15 +79,17 @@ function processWorkbook(workbook) {
     const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: "" });
     dashboardTitle.textContent = `Dashboard Finanziaria ${jsonData[0]?.[0] || 'Mensile'}`;
 
-    const mesi = [];
-    const datiMensili = {};
+    // --- MODIFICA 1: Creiamo un unico oggetto per tutti i dati (mesi + totale) ---
+    const allDashboardData = {};
+    const periodi = [];
 
+    // Ciclo per i mesi (righe da 4 a 15 del foglio, indici da 3 a 14)
     for (let i = 3; i < 15; i++) {
         const row = jsonData[i] || [];
         const mese = row[0];
         if (mese && typeof mese === 'string' && mese.trim() !== '') {
-            mesi.push(mese);
-            datiMensili[mese] = {
+            periodi.push(mese);
+            allDashboardData[mese] = {
                 stipendio: parseValue(row[1]),
                 altro: parseValue(row[2]),
                 entrataTotale: parseValue(row[3]),
@@ -123,23 +125,77 @@ function processWorkbook(workbook) {
             };
         }
     }
+    
+    // --- MODIFICA 2: Leggiamo la riga 16 (indice 15) per i dati totali del 2025 ---
+    const totalRow = jsonData[15] || [];
+    const yearKey = '2025'; // La chiave per i nostri dati annuali
+    allDashboardData[yearKey] = {
+        stipendio: parseValue(totalRow[1]),
+        altro: parseValue(totalRow[2]),
+        entrataTotale: parseValue(totalRow[3]),
+        necessita: parseValue(totalRow[5]),
+        svago: parseValue(totalRow[6]),
+        daRimborsare: parseValue(totalRow[7]),
+        giacenza: parseValue(totalRow[10]),
+        disponibilita: parseValue(totalRow[11]),
+        risparmi: parseValue(totalRow[13]),
+        investimenti: parseValue(totalRow[14]),
+        necessitaMax: parseValue(totalRow[16]),
+        necessitaPercent: parseValue(totalRow[17]),
+        necessitaPercentResto: parseValue(totalRow[18]),
+        necessitaMargine: totalRow[19],
+        svagoMax: parseValue(totalRow[21]),
+        svagoPercent: parseValue(totalRow[22]),
+        svagoPercentResto: parseValue(totalRow[23]),
+        svagoMargine: totalRow[24],
+        risparmiMin: parseValue(totalRow[26]),
+        risparmiPercent: parseValue(totalRow[27]),
+        risparmiPercentResto: parseValue(totalRow[28]),
+        risparmiMargine: totalRow[29],
+        investimentiMin: parseValue(totalRow[31]),
+        investimentiPercent: parseValue(totalRow[32]),
+        investimentiPercentResto: parseValue(totalRow[33]),
+        investimentiMargine: totalRow[34],
+        necessitaPortafoglioPct: parseValue(totalRow[36]),
+        svagoPortafoglioPct: parseValue(totalRow[37]),
+        rimborsarePortafoglioPct: parseValue(totalRow[38]),
+        risparmiPortafoglioPct: parseValue(totalRow[39]),
+        investimentiPortafoglioPct: parseValue(totalRow[40]),
+        nonAllocatoPct: parseValue(totalRow[41])
+    };
+
 
     statusMessage.style.display = 'none';
     dashboardGrid.classList.remove('hidden');
     obiettiviSection.classList.remove('hidden');
     portafoglioSection.classList.remove('hidden');
+    
+    // --- MODIFICA 3: Creiamo il pulsante per il 2025 ---
+    const yearButtonContainer = document.getElementById('year-button-container');
+    yearButtonContainer.innerHTML = ''; // Puliamo per sicurezza
+    const yearButton = document.createElement('button');
+    yearButton.className = 'month-button';
+    yearButton.textContent = yearKey;
+    // La funzione onclick ora userà l'oggetto dati unificato
+    yearButton.onclick = () => updateDashboard(yearKey, allDashboardData);
+    yearButtonContainer.appendChild(yearButton);
 
+
+    // Creazione dei pulsanti dei mesi
     monthButtonsContainer.innerHTML = '';
-    mesi.forEach((mese) => {
+    periodi.forEach((mese) => {
         const button = document.createElement('button');
         button.className = 'month-button';
         button.textContent = mese.toUpperCase();
-        button.onclick = () => updateDashboard(mese, datiMensili);
+        // Anche qui, la funzione onclick usa l'oggetto dati unificato
+        button.onclick = () => updateDashboard(mese, allDashboardData);
         monthButtonsContainer.appendChild(button);
     });
 
-    const initialMonth = mesi[new Date().getMonth()] || mesi[0];
-    if (initialMonth) updateDashboard(initialMonth, datiMensili);
+    // --- MODIFICA 4: Semplifichiamo la chiamata iniziale ---
+    // La funzione `updateDashboard` ora deve accettare il nome del periodo e l'oggetto dati completo
+    const initialMonth = periodi[new Date().getMonth()] || periodi[0];
+    if (initialMonth) updateDashboard(initialMonth, allDashboardData);
 }
 
 function createOrUpdateChart(chartInstance, context, data, color) {
@@ -152,11 +208,14 @@ function createOrUpdateChart(chartInstance, context, data, color) {
     return chartInstance;
 }
 
-function updateDashboard(mese, datiMensili) {
-    const dati = datiMensili[mese];
+function updateDashboard(periodo, allData) { // Firma modificata
+    const dati = allData[periodo]; // Logica modificata per usare il nuovo oggetto
     if (!dati) return;
 
-    document.querySelectorAll('.month-button').forEach(btn => btn.classList.toggle('active', btn.textContent.toLowerCase() === mese.toLowerCase()));
+    // Aggiungiamo il selettore per il pulsante dell'anno
+    document.querySelectorAll('.control-panel .month-button').forEach(btn => 
+        btn.classList.toggle('active', btn.textContent.toLowerCase() === periodo.toLowerCase())
+    );
     
     giacenzaValoreEl.textContent = formatCurrency(dati.giacenza);
     disponibilitaValoreEl.textContent = formatCurrency(dati.disponibilita);
